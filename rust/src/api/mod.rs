@@ -734,6 +734,15 @@ impl Jvm {
         }
     }
 
+    /// Returns true if and only if the passed `Instance` is null
+    pub fn is_null(jvm: &Jvm, instance: &Instance) -> errors::Result<bool> {
+        jvm.to_rust(jvm.invoke_static(
+            "java.util.Objects",
+            "isNull",
+            &[jvm.clone_instance(instance)?.into()],
+        )?)
+    }
+
     /// Invokes the method `method_name` of a created `Instance`, passing an array of `InvocationArg`s. It returns an `Instance` as the result of the invocation.
     pub fn invoke(
         &self,
